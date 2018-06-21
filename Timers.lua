@@ -199,7 +199,7 @@ end
 
 function Gnosis:Timers_Spell(bar, timer, ti)
 	-- cast
-	local spell, _, _, icon, s, d, _, _, notInterruptible = UnitCastingInfo(timer.unit);
+	local spell, _, icon, s, d, _, _, notInterruptible = UnitCastingInfo(timer.unit);
 	if(d and d > 0) then
 		if(timer.spell == "all" or timer.spell == "any" or timer.spell == spell) then
 			ti.cname = spell;

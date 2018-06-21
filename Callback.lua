@@ -254,7 +254,7 @@ function Gnosis:UNIT_SPELLCAST_DELAYED(event, unit)
 	if (cb) then
 		repeat
 			if (cb.bActive) then
-				local spell, _, _, _, startTime, endTime = UnitCastingInfo(unit);
+				local spell, _, _, startTime, endTime = UnitCastingInfo(unit);
 				if (spell) then
 					self:UpdateCastbar(cb, startTime, endTime, spell);
 				end
