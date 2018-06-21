@@ -880,7 +880,7 @@ end
 -- clip test
 function Gnosis:SetupChannelData()
 	local fCurTime = GetTime() * 1000.0;
-	local name, rank, displayName, texture, startTime, endTime = UnitChannelInfo("player");
+	local name, displayName, texture, startTime, endTime = UnitChannelInfo("player");
 
 	local cs = self.s.channeledspells[name];
 	if(cs and cs.ben and (cs.bcliptest or cs.bcombattext or cs.bticksound)) then
@@ -946,7 +946,7 @@ function Gnosis:RequestClipTest()
 end
 
 function Gnosis:UpdateClipTest()
-	local spell, _, _, _, startTime, endTime = UnitChannelInfo("player");
+	local spell, _, _, startTime, endTime = UnitChannelInfo("player");
 	local cc = (self.nextchannel and self.nextchannel.spell == spell) and self.nextchannel or
 		((self.curchannel and self.curchannel.spell == spell) and self.curchannel or nil);
 

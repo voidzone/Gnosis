@@ -233,7 +233,7 @@ function Gnosis:UNIT_SPELLCAST_CHANNEL_UPDATE(event, unit)
 	if (cb) then
 		repeat
 			if (cb.bActive) then
-				local spell, _, _, _, startTime, endTime = UnitChannelInfo(unit);
+				local spell, _, _, startTime, endTime = UnitChannelInfo(unit);
 				if (spell) then
 					self:UpdateCastbar(cb, startTime, endTime, spell);
 				end

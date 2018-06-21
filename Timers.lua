@@ -216,7 +216,7 @@ function Gnosis:Timers_Spell(bar, timer, ti)
 			set_times(timer, ti, dur, fin, false);
 		end
 	else
-		spell, _, _, icon, s, d, _, _, notInterruptible = UnitChannelInfo(timer.unit);
+		spell, _, icon, s, d, _, _, notInterruptible = UnitChannelInfo(timer.unit);
 		if(d and d > 0) then
 			if(timer.spell == "all" or timer.spell == "any" or timer.spell == spell) then
 				ti.cname = spell;
