@@ -312,7 +312,7 @@ local function GetAura(timer, unit)
 		local i = 1;
 		
 		repeat
-			name, _, ic, sta, _, d, s, _, _, _, id, _, _, _, _, _, eff1, eff2, eff3 =
+			name, ic, sta, _, d, s, _, _, _, id, _, _, _, _, _, eff1, eff2, eff3 =
 				UnitAura(unit, i, timer.filter);
 			
 			if (id and id == timer.spellid) then
@@ -349,7 +349,7 @@ local function GetAura(timer, unit)
 		return;
 	else
 		-- aura name
-		local _, _, ic, sta, _, d, s, _, _, _, _, _, _, _, _, _, eff1, eff2, eff3 =
+		local _, ic, sta, _, d, s, _, _, _, _, _, _, _, _, _, eff1, eff2, eff3 =
 			UnitAura(unit, timer.spell, nil, timer.filter);
 		
 		if (timer.auraeffect3) then
