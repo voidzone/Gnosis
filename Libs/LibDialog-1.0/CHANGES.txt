@@ -1,0 +1,13 @@
+changeset:   88:13783d2eaeb1
+tag:         7.3.0.1
+user:        James D. Callahan III <jcallahan@curse.com>
+date:        Tue Sep 19 01:09:37 2017 -0500
+summary:     Update SlaySound usage for 7.3.x API change. Bump MINOR from 7 to 8. Remove upvalued _G.
+
+
+changeset:   87:3a48790ac44d
+user:        James D. Callahan III <jcallahan@curse.com>
+date:        Tue Sep 19 01:05:42 2017 -0500
+summary:     Bump ToC Interface from 70000 to 70300
+
+

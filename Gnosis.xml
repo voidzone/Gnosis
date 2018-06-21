@@ -1,0 +1,13 @@
+<!--
+Gnosis r184 last changed 2017-04-13T8:02:22Z
+Gnosis.xml last changed 2017-04-13T8:02:22Z
+-->
+<Ui>
+	<Frame name="GnosisDummy">
+		<Scripts>
+			<OnUpdate>
+				Gnosis:OnUpdate();
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>
