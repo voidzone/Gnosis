@@ -1,15 +1,15 @@
-## Interface: 70200
-## Title: Gnosis (|cffaaff44Castbars and Timers|r) r184
+## Interface: 80000
+## Title: Gnosis (|cffaaff44Castbars and Timers|r) r184-1
 ## Notes: Highly configurable castbar and single timer addon.
 ## Author: hlhicks@HenrysWindowsLaptop
-## Version: r184
+## Version: r184-1
 ## SavedVariables: GnosisDB, GnosisConfigs
 ## SavedVariablesPerCharacter: GnosisChar, GnosisCharConfig
 ## OptionalDeps: Ace3, AceGUI-3.0-SharedMediaWidgets, LibCompress, LibDialog-1.0, LibRangeCheck-2.0, LibSharedMedia-3.0
 ## LoadOnDemand: 0
 ## DefaultState: enabled
-## X-Revision: 184
-## X-Date: 2017-04-13T8:02:22Z
+## X-Revision: 184-1
+## X-Date: 2018-07-17
 
 # Libraries
 #@no-lib-strip@
