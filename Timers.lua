@@ -347,7 +347,7 @@ local function GetAura(timer, unit)
 		until id == nil or i > 40;
 
 		return;
-	else
+	--[[else
 		-- aura name
 		local _, ic, sta, _, d, s, _, _, _, _, _, _, _, _, _, eff1, eff2, eff3 =
 			UnitAura(unit, timer.spell, nil, timer.filter);
@@ -374,7 +374,7 @@ local function GetAura(timer, unit)
 		end
 		
 		-- nothing to return
-		return ic;
+		return ic; ]]
 	end	
 end
 
