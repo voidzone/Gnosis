@@ -126,7 +126,6 @@ function Gnosis:UNIT_SPELLCAST_SUCCEEDED(event, unit, spell_guid, spellid)
 	local spell = GetSpellInfo(spellid)
 	if (unit == "player") then
 		local fCurTime = GetTime() * 1000.0;
-		print(string.format("Spell: %s -- Spellid: %s", spell, spellid))
 		self:FindGCDBars(spell, fCurTime, spellid);
 		-- update timer bars now (to make gcd bars appear instantly)
 		self:StartTimerUpdate(fCurTime, true);
