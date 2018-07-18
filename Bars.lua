@@ -60,7 +60,7 @@ function Gnosis:CheckStoredCastbarOptions()
 	local strUpgrade254 = "upgrading bars to v2.54 options:\n  ";
 	local strUpgrade325 = "upgrading bars to v3.25 options:\n  ";
 	local strUpgrade462 = "upgrading bars to v4.62 options:\n  ";
-	
+
 	for cbname, cbopt in pairs(self.s.cbconf) do
 		-- upgrade castbar if needed (v1.50)
 		if(not cbopt.cboptver and cbopt.width and cbopt.height and cbopt.anchor) then
@@ -151,12 +151,12 @@ function Gnosis:CheckStoredCastbarOptions()
 
 			cbopt.cboptver = 2.54;
 		end
-		
+
 		-- upgrade to v3.25 (no changes to bars itself)
 		if(cbopt.cboptver < 3.25) then
 			iUpgrade325 = iUpgrade325 + 1;
 			strUpgrade325 = strUpgrade325 .. cbname .. "  ";
-			
+
 			cbopt.cboptver = 3.25;
 		end
 
@@ -164,14 +164,14 @@ function Gnosis:CheckStoredCastbarOptions()
 		if(cbopt.cboptver < 4.62) then
 			iUpgrade462 = iUpgrade462 + 1;
 			strUpgrade462 = strUpgrade462 .. cbname .. "  ";
-			
+
 			-- only removing spec entry, automatically adding spectab
 			-- enabling all three or four talent specializations
 			cbopt.spec = nil;
-			
+
 			cbopt.cboptver = 4.62;
 		end
-		
+
 		-- add colBarNI if missing
 		cbopt.colBarNI = cbopt.colBarNI or cbopt.colBar;
 
@@ -193,7 +193,7 @@ function Gnosis:CheckStoredCastbarOptions()
 			cbopt.unit = "smr";
 		end
 	end
-	
+
 	if (iUpgrade150 > 0) then
 		strUpgrade150 = strUpgrade150 .. "\n  ..." .. iUpgrade150 .. " bars upgraded\n  ...please check those bars' options";
 		self:Print(strUpgrade150);
@@ -213,7 +213,7 @@ function Gnosis:CheckStoredCastbarOptions()
 		strUpgrade254 = strUpgrade254 .. "\n  ..." .. iUpgrade254 .. " bars upgraded\n  ...please check those bars' options";
 		self:Print(strUpgrade254);
 	end
-	
+
 	if (iUpgrade325 > 0) then
 		strUpgrade325 = strUpgrade325 .. "\n  ..." .. iUpgrade325 .. " bars upgraded\n  ...please check those bars' options";
 		self:Print(strUpgrade325);
@@ -223,7 +223,7 @@ function Gnosis:CheckStoredCastbarOptions()
 		strUpgrade462 = strUpgrade462 .. "\n  ..." .. iUpgrade462 .. " bars upgraded\n  ...please check those bars' options";
 		self:Print(strUpgrade462);
 	end
-	
+
 	self:CreateCBTables();
 end
 
@@ -398,19 +398,19 @@ function Gnosis:FindGCDBars(spell, fCurTime, spellid)
 	if (not start or not(cd > 0 and cd <= 1.5)) then
 		return;
 	end
-	
+
 	local cb = self:FindCB("gcd");
 	while (cb) do
 		self:SetupGCDbar(cb, spell, fCurTime, false, start, cd, spellid);
 		cb = self:FindCBNext("gcd");
 	end
-	
+
 	local cb = self:FindCB("gcd2");
 	while (cb) do
 		self:SetupGCDbar(cb, spell, fCurTime, false, start, cd, spellid);
 		cb = self:FindCBNext("gcd2");
 	end
-	
+
 	if (self.current_gcd) then
 		self.current_gcd.spell = spell;
 		self.current_gcd.spellid = spellid;
@@ -455,7 +455,7 @@ end
 function Gnosis:FontString(bar, height)
 	local fs = bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmallOutline");
 	fs:SetFont(GameFontNormal:GetFont(), height);
-	
+
 	return fs;
 end
 
@@ -713,7 +713,7 @@ function Gnosis:SetBarParams(name, cfgtab, bartab)
 	elseif (tParams.alignment == "TIMENAME") then
 		bar.rtext:SetPoint("LEFT", bar, "LEFT", tParams.coord["casttime"].x, tParams.coord["casttime"].y);
 		bar.ctext:SetPoint("RIGHT", bar, "RIGHT", tParams.coord["castname"].x, tParams.coord["castname"].y);
-		
+
 		if (tParams.alignname == "LEFT" or tParams.alignname == "CENTER") then
 			-- no resizing of long names possible
 			bar.ctext:SetPoint("LEFT", bar.rtext, "LEFT", 0, 0);
@@ -773,7 +773,7 @@ function Gnosis:SetBarParams(name, cfgtab, bartab)
 	bar.nfs = tParams.strNameFormat;
 	bar.tfs = tParams.strTimeFormat;
 	self:GenerateTimeTable(bar, true);
-	
+
 	-- word wrapping for nfs and tfs
 	bar.ctext:SetWordWrap(tParams.bWordWrapNfs or false);
 	bar.rtext:SetWordWrap(tParams.bWordWrapTfs or false);
@@ -785,7 +785,7 @@ function Gnosis:SetBarParams(name, cfgtab, bartab)
 	else
 		bar.bnIsCB = nil;
 	end
-	
+
 	-- stop any sounds of current bar
 	Gnosis:StopBarSounds(name);
 end
@@ -873,7 +873,7 @@ function Gnosis:CreateBarFrame(name, iconpath, minval, maxval)
 		f.rtext:SetWordWrap(false);
 		f.bltext:SetWordWrap(false);
 		f.brtext:SetWordWrap(false);
-	
+
 		-- latency bar
 		f.lb = {};
 		for i = 1, 15 do		-- might be a bit extreme (hellfire ticks 15x)
@@ -1034,7 +1034,7 @@ function Gnosis:RemoveCastbarDialog(key)
 	Gnosis.dialog:Register("GNOSIS_REMOVEBAR",
 		{
 			text = Gnosis.L["OptCBRemCB"] .. " " .. key,
-			buttons = { 
+			buttons = {
 				{
 					text = Gnosis.L["Yes"],
 					on_click = function(self)
@@ -1055,14 +1055,14 @@ function Gnosis:RemoveCastbarDialog(key)
 			strata = 5,
 		}
 	);
-	
+
 	Gnosis.dialog:Spawn("GNOSIS_REMOVEBAR");
 end
 
 function Gnosis:RemoveCastbar(key)
 	-- stop sounds
 	self:StopBarSounds(key);
-	
+
 	-- cleanup
 	self:CleanupCastbar(self.castbars[key]);
 	self.castbars[key]:Hide();
@@ -1141,12 +1141,12 @@ function Gnosis:CheckInstanceType(cfg)
 		return true;
 	else
 		local isinside, instance = IsInInstance();
-		
+
 		if (cfg.instancetype == 2) then
 			-- only when inside any instance
 			return isinside == true;
 		elseif (cfg.instancetype == 3) then
-			-- only when outside of instance			
+			-- only when outside of instance
 			return isinside ~= true;
 		elseif (cfg.instancetype == 4) then
 			-- only when inside battleground
@@ -1162,7 +1162,7 @@ function Gnosis:CheckInstanceType(cfg)
 			return isinside == true and instance == "raid";
 		end
 	end
-	
+
 	return true;
 end
 
@@ -1238,12 +1238,12 @@ function Gnosis:SetupGCDbar(cb, spell, fCurTime, right2left, start, cd, spellid)
 	if (cfg.unit == "gcd2") then
 		local spellcasttime = select(4, GetSpellInfo(spellid));
 		local playerischanneling = UnitChannelInfo("player");
-		
+
 		if (playerischanneling or not (spellcasttime and spellcasttime <= 0)) then
 			return;
 		end
 	end
-	
+
 	-- valid group layout? valid instance type?
 	if (not self:CheckGroupLayout(cfg) or not self:CheckInstanceType(cfg)) then
 		return;
@@ -1284,7 +1284,6 @@ function Gnosis:SetupGCDbar(cb, spell, fCurTime, right2left, start, cd, spellid)
 
 	cb.ctext:SetText(self:CreateCastname(cb, cfg, spell));
 	cb.castname = "";
-
 	local val = (cb.endTime - fCurTime) / (cb.duration);
 	cb.bar:SetValue((cb.channel and (1-val) or val));
 	cb:SetAlpha(cfg.alpha);
@@ -1446,7 +1445,7 @@ function Gnosis:CreateCastnameFromString(name, cb)
 	if((not bRank and rank and rank ~= "") or cb.stacks) then
 		bOther = true;
 	end
-	
+
 	if(bRank) then
 		str = string_gsub(str, "arabic", strRankArabic);
 		str = string_gsub(str, "roman", strRankRoman);
@@ -1458,7 +1457,7 @@ function Gnosis:CreateCastnameFromString(name, cb)
 		str = string_gsub(str, "rank<([^>]+)>", "");
 		str = string_gsub(str, "txr<([^>]+)>", "");
 	end
-	
+
 	if(bOther) then
 		str = string_gsub(str, "misc", cb.stacks and cb.stacks or rank);
 		str = string_gsub(str, "txm<([^>]+)>", "%1");
@@ -1475,7 +1474,7 @@ function Gnosis:CreateCastnameFromString(name, cb)
 		str = string_gsub(str, "effect", "");
 		str = string_gsub(str, "txeff<([^>]+)>", "");
 	end
-	
+
 	if(cb.bIsTrade) then
 		str = string_gsub(str, "tscur", string_format("%.0f", cb.tscnt));
 		str = string_gsub(str, "tstot", string_format("%.0f", cb.tstot));
@@ -1500,7 +1499,7 @@ function Gnosis:CreateCastnameFromString(name, cb)
 	lenname = string_match(str, "abbr<(%d+)>");
 	lenname = tonumber(lenname) and tonumber(lenname) or nil;
 	str = string_gsub(str, "abbr<([^>]*)>", "abbr");
-	
+
 	if(lenname) then
 		local bMulti = false;
 
@@ -1537,12 +1536,12 @@ function Gnosis:CreateCastnameFromString(name, cb)
 			str = string_gsub(str, "abbr", name);
 		end
 	end
-	
+
 	-- trunc
 	lenname = string_match(str, "trunc<(%d+)>");
 	lenname = tonumber(lenname) and tonumber(lenname) or nil;
 	str = string_gsub(str, "trunc<([^>]*)>", "trunc");
-		
+
 	if (lenname) then
 		if (string_len(name) > lenname) then
 			str = string_gsub(str, "trunc", string_sub(name, 1, lenname) .. "...");
@@ -1550,10 +1549,10 @@ function Gnosis:CreateCastnameFromString(name, cb)
 			str = string_gsub(str, "trunc", name);
 		end
 	end
-	
+
 	-- name
 	str = string_gsub(str, "name", name);
-	
+
 	-- unit name
 	if(uname) then
 		str = string_gsub(str, "who", uname);
@@ -1589,12 +1588,12 @@ local function GenerateTimeTable_GetFormat(str)
 			decimals = tonumber(c);
 		end
 	end
-  
+
 	local str_sec = "%" .. (bSign and "+" or "") .. "." .. decimals .. "f";
 	local str_inc_prec = "%" .. (bSign and "+" or "") .. "." .. (decimals+1) .. "f"
 	local incprecval = 1.0 / math.pow(10, decimals);
 	bIncPrecision = bIncPrecision and (decimals == 0);
-   
+
 	return t, str_sec, bMin, bPerc, decimals, bIncPrecision, incprecval, str_inc_prec;
 end
 
@@ -1625,7 +1624,7 @@ function Gnosis:GenerateTimeTable(cb, bIsTime)
 				item.type, item.str, item.bMin, item.bPerc, item.decimals,
 					item.bIncPrecision, item.incprecval, item.str_inc_prec
 						= GenerateTimeTable_GetFormat(string_sub(str, s, e));
-					
+
 				item.bMin = bIsTime and item.bMin or nil;
 				item.bIsTime = bIsTime;
 
@@ -1661,7 +1660,7 @@ local function GenerateTimeTable_Item(t, value, value_max)
 					return string_format(t.str_inc_prec, value);
 				end
 			end
-						
+
 			return string_format(t.str, value);
 		end
 	else
@@ -1710,21 +1709,21 @@ end
 
 function Gnosis:SetPowerbarValueMarkers(cb, curpower, maxpower, mcnt, msize)
 	local cfg = cb.conf;
-	
+
 	-- calculated values
 	local marker_power = maxpower / mcnt;
 	local usize = 1 - msize;
-	
+
 	local summed_bar_parts = mcnt - usize;
 	local marker_visible_size = msize / summed_bar_parts;
 	local marker_pos = 1.0 / summed_bar_parts;
-		
+
 	-- draw markers
 	for i = 1, mcnt do
 		if (i * marker_power > curpower) then
 			cb.lb[i]:Hide();
 		else
-			local p = (i-1) * marker_pos;				
+			local p = (i-1) * marker_pos;
 			if (cfg.bChanAsNorm) then
 				-- show channel as normal cast
 				cb.lb[i]:ClearAllPoints();
@@ -1773,7 +1772,7 @@ function Gnosis:SetPowerbarValue(cb, curpower, maxpower, bShowSpark)
 	-- set statusbar value
 	local val = min(curpower/maxpower, 1);
 	cb.bar:SetValue(val);
-	
+
 	cb:SetAlpha(cfg.alpha);
 	cb:Show();
 
@@ -1797,7 +1796,7 @@ function Gnosis:SetPowerbarValue(cb, curpower, maxpower, bShowSpark)
 				cb.cbs:SetPoint("CENTER", cb.bar, "LEFT", val * cb.barwidth, 0);
 			end
 		end
-		
+
 		cb.cbs:Show();
 	else
 		cb.cbs:Hide();
@@ -1831,9 +1830,9 @@ function Gnosis:SetupPowerbar(cb, tiinfo)
 	cb.castname = cname and cname or "";
 
 	cb.channel = true;
-	
+
 	selectIcon(cb, curtimer);
-	
+
 	cb.id = nil;
 
 	-- set current value
@@ -1856,7 +1855,7 @@ function Gnosis:SetupPowerbar(cb, tiinfo)
 	else
 		self:SetBorderColor(cb, cfg.colBorder, cfg.colBarBg, curtimer.hideicon);
 	end
-	
+
 	-- pushback irrelevant for timer bars
 	cb.pushback = 0;
 
@@ -1892,9 +1891,9 @@ function Gnosis:SetupTimerbar(cb, fCurTime, tiinfo)
 	cb.tiType = curtimer.type;
 
 	cb.channel = bChannel;
-	
+
 	selectIcon(cb, curtimer);
-	
+
 	cb.id = nil;
 
 	-- show castbar text
@@ -1926,17 +1925,17 @@ function Gnosis:SetupTimerbar(cb, fCurTime, tiinfo)
 		self:SetBorderColor(cb, cfg.colBorder, cfg.colBarBg, curtimer.hideicon);
 		cb.sicon:Hide();
 	end
-	
+
 	-- castbar color
 	if(curtimer.sbcolor) then
 		cb.bar:SetStatusBarColor(unpack(curtimer.sbcolor));
 	end
-	
+
 	-- border color (override)
 	if (curtimer.bcolor) then
 		self:SetBorderColor(cb, curtimer.bcolor, cfg.colBarBg, curtimer.hideicon);
 	end
-	
+
 	-- castbar spark
 	cb.cbs_hidden = false;
 	cb.cbs_check = curtimer.cbs and bStatic or false;
@@ -1977,7 +1976,7 @@ function Gnosis:SetupTimerLagBox(cb, showlag, showcasttime, castname, recast, bR
 		cb.lb[1]:ClearAllPoints();
 		local ctlagSize = min(lagct / cb.duration, 1.0);
 		local recastSize = min(recast / cb.duration, 1.0 - ctlagSize);
-		
+
 		if (cfg.orient == 2) then
 			cb.lb[1]:SetHeight(cb.barheight * recastSize);
 			if (cfg.bInvDir) then
@@ -2002,7 +2001,7 @@ function Gnosis:SetupTimerLagBox(cb, showlag, showcasttime, castname, recast, bR
 		-- latency box
 		cb.lb[1]:ClearAllPoints();
 		local ctlagSize = min(lagct / cb.duration, 1.0);
-		
+
 		if (cfg.orient == 2) then
 			cb.lb[1]:SetHeight(cb.barheight * ctlagSize);
 			if (cfg.bInvDir) then
@@ -2047,7 +2046,7 @@ function Gnosis:SetupCastbar(cb, bIsChannel, fCurTime)
 	if (not self:CheckGroupLayout(cfg) or not self:CheckInstanceType(cfg)) then
 		return;
 	end
-	
+
 	-- blacklisted?
 	if(cfg.bnwtypesel == 2 and cfg.bnwlist) then
 		for key, value in pairs(cfg.bnwlist) do
@@ -2069,7 +2068,7 @@ function Gnosis:SetupCastbar(cb, bIsChannel, fCurTime)
 			return;
 		end
 	end
-	
+
 	-- tradeskill stuff
 	local bDoResize = true;
 	local bnTS = true;
@@ -2184,7 +2183,7 @@ function Gnosis:SetupCastbar(cb, bIsChannel, fCurTime)
 
 		cb.totalticks = cfg.bShowTicks and totalticks or 0;
 		cb.shownticks = cfg.bShowTicks and shownticks or 0;
-		
+
 		self:DrawTicks(cb, cfg);
 	else
 		cb.totalticks = 0;
@@ -2194,7 +2193,7 @@ function Gnosis:SetupCastbar(cb, bIsChannel, fCurTime)
 
 	if (cfg.unit == "player" and self.lag < 10000) then
 		-- latency box, player only
-		-- < 10000ms should filter latency for most summoning stone timers, also hide latency when just too extreme		
+		-- < 10000ms should filter latency for most summoning stone timers, also hide latency when just too extreme
 		if (not(cs and cs.ben and cfg.bShowTicks) and cfg.bShowLat) then
 			cb.lb[1]:ClearAllPoints();
 			if (cfg.orient == 2) then
@@ -2202,14 +2201,14 @@ function Gnosis:SetupCastbar(cb, bIsChannel, fCurTime)
 				local direction = (cb.channel and (not cfg.bChanAsNorm)) and "BOTTOM" or "TOP";
 				if (cfg.bInvDir) then
 					direction = (direction == "BOTTOM") and "TOP" or "BOTTOM";
-				end				
+				end
 				cb.lb[1]:SetPoint(direction);
 			else
 				cb.lb[1]:SetWidth(cb.barwidth * max(min(self.lag / cb.duration, cfg.latbarsize), cfg.latbarfixed));
 				local direction = (cb.channel and (not cfg.bChanAsNorm)) and "LEFT" or "RIGHT";
 				if (cfg.bInvDir) then
 					direction = (direction == "LEFT") and "RIGHT" or "LEFT";
-				end				
+				end
 				cb.lb[1]:SetPoint(direction);
 			end
 			cb.lb[1]:Show();
@@ -2246,7 +2245,7 @@ function Gnosis:SetupCastbar(cb, bIsChannel, fCurTime)
 	-- set bar active
 	cb.bActive = true;
 	self.activebars[barname] = cb;
-	
+
 	if (not (cfg.incombatsel == 1 or cfg.incombatsel == self.curincombattype or cfg.bUnlocked)) then
 		cb:Hide();
 		cb.bBarHidden = true;
@@ -2290,18 +2289,18 @@ function Gnosis:UpdateCastbar(cb, startTime, endTime, spell)
 			end
 
 			if (cfg.bExtChannels) then
-				if (cb.endTime - cb.ticks[cb.totalticks] > cb.channelticktime) then					
+				if (cb.endTime - cb.ticks[cb.totalticks] > cb.channelticktime) then
 					if (cb.totalticks < cb.shownticks) then
 						local newtickcnt = ceil(cb.duration / cb.channelticktime);
 						newtickcnt = (newtickcnt <= cb.shownticks) and newtickcnt or cb.shownticks;
-						
+
 						for i=(cb.totalticks+1), newtickcnt do
 							cb.ticks[i] = cb.ticks[i-1] - cb.channelticktime;
 						end
-						cb.totalticks = newtickcnt;						
+						cb.totalticks = newtickcnt;
 					end
 				end
-				
+
 				self:DrawTicks(cb, cfg);
 			end
 		end
@@ -2327,7 +2326,7 @@ function Gnosis:DrawTicks(cb, cfg)
 										-- should always be in the range 1..15
 			valLBperc = min(valLBperc, 1 / cb.totalticks * 0.5);
 		end
-		
+
 		for i = 1, cb.totalticks do
 			if (i <= cb.shownticks) then
 				if (cb.ticks[i] > cb.endTime) then
@@ -2335,7 +2334,7 @@ function Gnosis:DrawTicks(cb, cfg)
 				else
 					-- position of marker
 					local p = (cb.endTime-cb.ticks[i]) / cb.duration;
-					
+
 					if (p == 1.0) then
 						-- out of bounds (need special handling since :SetWidth(0) does not work)
 						cb.lb[i]:Hide();
@@ -2389,15 +2388,15 @@ function Gnosis:PrepareCastbarForFadeout(cb, fCurTime, bForce)
 	if (self.activebars[barname] or bForce) then
 		cb.bActive = false;
 		self.activebars[barname] = nil;
-		
+
 		cb.alpha = cfg.alpha;
 		cb.bIsTrade = nil;
-		
+
 		if (cfg.bFillup) then
 			cb.bar:SetValue(cb.channel and 0 or 1.0);
 			cb.cbs:Hide();
-		end	
-		
+		end
+
 		if (cfg.fadeout <= 0) then
 			cb:Hide();
 			self:CleanupCastbar(cb);
@@ -2405,7 +2404,7 @@ function Gnosis:PrepareCastbarForFadeout(cb, fCurTime, bForce)
 			self.fadeoutbars[barname] = cb;
 			cb.endTime = fCurTime + cfg.fadeout * 1000;
 			cb.duration = cfg.fadeout * 1000;
-		end			
+		end
 	end
 end
 
@@ -2492,7 +2491,7 @@ function Gnosis:SetupBarString(cb, cfg, fCurTime, bDoResize)
 
 		local ctextmax = cb.barwidth - (cb.rtext:GetStringWidth() + cfg.strGap);
 		local factor = 1.0;
-		
+
 		while ctextmax < cb.ctext:GetStringWidth() do
 			local refactor = ctextmax / cb.ctext:GetStringWidth();
 			if(refactor > 0.9) then
