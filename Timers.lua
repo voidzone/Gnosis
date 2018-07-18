@@ -1896,10 +1896,11 @@ function Gnosis:CreateSingleTimerTable()
 
 					-- get name and icon if cast/aura and passed as spellid
 					if ((tiType <= 2 or tiType == 10 or tiType == 11 or tiType == 21) and tonumber(spell)) then
-						local name_, _, icon_ = GetSpellInfo(tonumber(spell));
+						local name_, _, icon_, _, _, _, spellid_ = GetSpellInfo(tonumber(spell));
 						if(name_ and icon_) then
 							tTimer.spell = name_;
 							tTimer.icon = icon_;
+							tTimer.spellid = spellid_;
 						end
 					end
 					
