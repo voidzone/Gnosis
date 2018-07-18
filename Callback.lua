@@ -111,23 +111,26 @@ function Gnosis:Update()
 
 	-- timers
 	self:StartTimerUpdate(fCurTime);
-	
+
 	-- LibDialog-1.0 bandaid
 	if (Gnosis.bDelayedEsc) then
 		StaticPopup_EscapePressed();
 		Gnosis.bDelayedEsc = nil;
 	end
-								
+
 end
 
 -- events
-function Gnosis:UNIT_SPELLCAST_SUCCEEDED(event, unit, spell, rank, _, spellid)
+function Gnosis:UNIT_SPELLCAST_SUCCEEDED(event, unit, spell_guid, spellid)
+	local rank = nil
+	local spell = GetSpellInfo(spellid)
 	if (unit == "player") then
 		local fCurTime = GetTime() * 1000.0;
-		self:FindGCDBars(spell, rank, fCurTime, spellid);
+		print(string.format("Spell: %s -- Spellid: %s", spell, spellid))
+		self:FindGCDBars(spell, fCurTime, spellid);
 		-- update timer bars now (to make gcd bars appear instantly)
 		self:StartTimerUpdate(fCurTime, true);
-		
+
 		if (self.iSwing == 2) then
 			self.strAutoShot, _, self.iconAutoShot = GetSpellInfo(75);
 			self.strShootWand, _, self.iconShootWand = GetSpellInfo(5019);
@@ -151,12 +154,12 @@ function Gnosis:UNIT_SPELLCAST_START(event, unit, spell, rank, _, spellid)
 			cb = self:FindCBNext(unit);
 		until cb == nil;
 	end
-	
-	if (unit == "player") then		
+
+	if (unit == "player") then
 		local fCurTime = GetTime() * 1000.0;
-		
+
 		self:FindGCDBars(spell, rank, fCurTime, spellid);
-		
+
 		if (self.iLastTradeSkillCnt) then
 			self.iLastTradeSkillCnt = self.iLastTradeSkillCnt - 1;
 			self.bNewTradeSkill = nil;
@@ -323,7 +326,7 @@ function Gnosis:UNIT_SPELLCAST_INTERRUPTED(event, unit, spell, rank, lineid, spe
 					if (not cb.channel) then
 						cb.bar:SetStatusBarColor(unpack(conf.colInterrupted));
 					end
-						
+
 					cb.bar:SetValue(cb.channel and 0 or 1.0);
 				end
 			end
@@ -375,17 +378,17 @@ end
 function Gnosis:COMBAT_LOG_EVENT_UNFILTERED(_, ts, event, _, sguid, _, _, _, dguid, dname, _, _, sid, spellname, _, dmg, oh, absorbed, bcritheal, bmultiheal, _, bcrit, _, _, _, bmulti)
 	if (sguid == self.guid) then	-- player
 		local fCurTime = GetTime() * 1000;
-		
+
 		local heal_done = (event == "SPELL_HEAL" or event == "SPELL_PERIODIC_HEAL");
 		local dmg_done = (event == "SPELL_DAMAGE" or event == "SPELL_PERIODIC_DAMAGE");
 		local dmg_missed = (event == "SPELL_MISSED" or event == "SPELL_PERIODIC_MISSED");
-		
+
 		if (dmg_done or heal_done or dmg_missed) then
 			-- ticks from channeled spell?
 			local cc, nc = self.curchannel, self.nextchannel;
 			local selcc = (cc and cc.spell == spellname) and cc or ((nc and nc.spell == spellname) and nc or nil);
 			local selccnext = (cc and cc.spell == spellname) and false or ((nc and nc.spell == spellname) and true or false);
-			
+
 			if (selcc) then
 				-- tick
 				local dmgdone = (dmg_done or heal_done) and dmg or 0;
@@ -402,17 +405,17 @@ function Gnosis:COMBAT_LOG_EVENT_UNFILTERED(_, ts, event, _, sguid, _, _, _, dgu
 				else
 					-- non multistrike tick
 					selcc.ticks = selcc.ticks + 1;
-					
+
 					if(selcc.bticksound) then
 						self:PlaySounds();
 					end
 				end
-				
+
 				selcc.lastticktime = fCurTime;
 				selcc.hits = (bcrit or (event == "SPELL_MISSED" or event == "SPELL_PERIODIC_MISSED")) and selcc.hits or (selcc.hits + 1);
 				selcc.crits = (bcrit and (event == "SPELL_DAMAGE" or event == "SPELL_PERIODIC_DAMAGE")) and (selcc.crits + 1) or selcc.crits;
 				selcc.crits = (bcritheal and event == "SPELL_HEAL") and (selcc.crits + 1) or selcc.crits;
-				
+
 				-- cliptest enable and non aoe spell?
 				if (isNormalTick and selcc.bcliptest and not selcc.baeo) then
 					if ((not selccnext and (cc and nc)) or selcc.ticks >= selcc.maxticks) then
@@ -438,10 +441,10 @@ function Gnosis:COMBAT_LOG_EVENT_UNFILTERED(_, ts, event, _, sguid, _, _, _, dgu
 				end
 			end
 		end
-		
+
 		if (self.ti_icd[spellname] and event ~= "SPELL_CAST_FAILED") then
 			--print("player", spellname, self.ti_icd[spellname].duration, event);
-			
+
 			if (self.ti_icd_active[spellname] == nil or not self.ti_icd[spellname].norefresh) then
 				self.ti_icd_active[spellname] = fCurTime + self.ti_icd[spellname].duration;
 			end
@@ -453,10 +456,10 @@ function Gnosis:COMBAT_LOG_EVENT_UNFILTERED(_, ts, event, _, sguid, _, _, _, dgu
 			Gnosis:FindSwingTimersParry("sm", fCurTime);
 			Gnosis:FindSwingTimersParry("smr", fCurTime);
 		end
-		
+
 		if (self.ti_icd[spellname] and event ~= "SPELL_CAST_FAILED") then
 			--print("is target", spellname, self.ti_icd[spellname].duration, event);
-			
+
 			if (self.ti_icd_active[spellname] == nil or not self.ti_icd[spellname].norefresh) then
 				self.ti_icd_active[spellname] = GetTime() * 1000 + self.ti_icd[spellname].duration;
 			end
@@ -468,7 +471,7 @@ function Gnosis:UNIT_SPELLCAST_SENT(event, unit, _, _, target)
 	-- latency estimation
 	self.strLastTarget = (target and target ~= "") and target or nil;
 	self.lag = select(4, GetNetStats());
-	
+
 	-- grab unit class of target if possible
 	if (self.strLastTarget) then
 		local _, class = UnitClass(target);
@@ -639,7 +642,7 @@ end
 
 function Gnosis:PLAYER_TALENT_UPDATE()
 	self.iCurSpec = GetSpecialization();
-	
+
 	for key, value in pairs(self.castbars) do
 		local conf = Gnosis.s.cbconf[key];
 		if (conf.bEn) then
