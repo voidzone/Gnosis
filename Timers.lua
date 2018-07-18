@@ -306,6 +306,10 @@ function Gnosis:Timers_Counter(bar, timer, ti)
 end
 
 local function GetAura(timer, unit)
+	if (not timer.spellid) then
+		timer.spellid = select(7, GetSpellInfo(timer.spell));
+	end
+	
 	if (timer.spellid) then
 		-- aura id
 		local _, name, ic, sta, d, s, eff1, eff2, eff3, id;
