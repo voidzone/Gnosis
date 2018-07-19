@@ -306,10 +306,6 @@ function Gnosis:Timers_Counter(bar, timer, ti)
 end
 
 local function GetAura(timer, unit)
-	if (not timer.spellid) then
-		timer.spellid = select(7, GetSpellInfo(timer.spell));
-	end
-	
 	if (timer.spellid) then
 		-- aura id
 		local _, name, ic, sta, d, s, eff1, eff2, eff3, id;
@@ -351,10 +347,10 @@ local function GetAura(timer, unit)
 		until id == nil or i > 40;
 
 		return;
-	--[[else
+	else
 		-- aura name
 		local _, ic, sta, _, d, s, _, _, _, _, _, _, _, _, _, eff1, eff2, eff3 =
-			UnitAura(unit, timer.spell, nil, timer.filter);
+			AuraUtil.FindAuraByName(timer.spell, unit, timer.filter);
 		
 		if (timer.auraeffect3) then
 			if (eff3 and eff3 > 0) then
@@ -378,7 +374,7 @@ local function GetAura(timer, unit)
 		end
 		
 		-- nothing to return
-		return ic; ]]
+		return ic;
 	end	
 end
 
